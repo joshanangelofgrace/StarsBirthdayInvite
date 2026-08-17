@@ -35,4 +35,10 @@
     >
       18TH OCTOBER 2026
     </p>
+
+    <p
+      class="absolute inset-x-0 bottom-[9%] z-10 px-6 text-center text-xs font-light tracking-[0.15em] text-[gold] sm:text-sm"
+    >
+      JAN WOLKERSLAAN 47, OEGSTGEEST
+    </p>
 </template>
