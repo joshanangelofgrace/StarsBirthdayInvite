@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+/* Tailwind v4 keeps design tokens in CSS. Everything below becomes a utility:
+   --color-night-900 -> bg-night-900 / to-night-900, --animate-drift-far ->
+   animate-drift-far, and so on. */
+@theme {
+  --font-display: "Lato", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+
+  /* Sampled from the original index.css gradient and title fill. */
+  --color-night-950: #090a0f;
+  --color-night-900: #1b2735;
+  --color-night-700: #38495a;
+  --color-star: #ffffff;
+
+  /* The starfield scrolls exactly one 2000px tile per cycle, so a duplicate
+     tile offset by 2000px makes the loop seamless. Three speeds reproduce the
+     parallax of the original #stars / #stars2 / #stars3 layers. */
+  --animate-drift-near: drift 150s linear infinite;
+  --animate-drift-mid: drift 170s linear infinite;
+  --animate-drift-far: drift 200s linear infinite;
+
+  @keyframes drift {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-2000px);
+    }
+  }
+}
+
+/* The original set these on <html> to kill the scrollbar behind a fixed
+   viewport-sized scene. */
+@layer base {
+  html {
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--color-night-950);
+  }
+}
