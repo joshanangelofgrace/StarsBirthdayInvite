@@ -7,11 +7,22 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
-  // The invite is a single prerendered page with no server-side work, so build
-  // straight to static files. Without this, `nuxt build` emits a Nitro server
-  // and `.output/public` holds only `_nuxt/` assets — no index.html — which
-  // leaves the `dist` symlink pointing at an unservable directory.
-  nitro: { preset: 'static' },
+  // The invite has no server-side work, so build straight to static files.
+  // Without this, `nuxt build` emits a Nitro server and `.output/public` holds
+  // only `_nuxt/` assets — no index.html — which leaves the `dist` symlink
+  // pointing at an unservable directory.
+  //
+  // `crawlLinks` is what makes /rsvp exist as a real file: plain `nuxt build`
+  // only prerenders `/`, so the RSVP route 404s on a static host. The explicit
+  // `routes` list is a safety net for any page the crawler can't reach from a
+  // <NuxtLink> on the home page.
+  nitro: {
+    preset: 'static',
+    prerender: {
+      crawlLinks: true,
+      routes: ['/', '/rsvp'],
+    },
+  },
 
   // Tailwind v4 is a Vite plugin now; there is no tailwind.config.js. Theme
   // values live in app/assets/css/main.css under @theme.

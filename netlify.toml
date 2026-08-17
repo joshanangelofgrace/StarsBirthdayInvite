@@ -1,0 +1,13 @@
+# Without this file Netlify auto-detects Nuxt and guesses the publish directory,
+# which is how /rsvp ended up as a "Page not found". Be explicit instead.
+#
+# `publish` points at the real output directory rather than the `dist` symlink
+# Nitro drops in the project root, so the deploy does not depend on symlink
+# resolution. NITRO_PRESET pins the static preset, otherwise Nitro sees
+# Netlify's env vars and auto-switches to its serverless preset.
+[build]
+  command = "npm run build"
+  publish = ".output/public"
+
+[build.environment]
+  NITRO_PRESET = "static"
