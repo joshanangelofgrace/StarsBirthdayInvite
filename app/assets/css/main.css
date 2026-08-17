@@ -28,6 +28,34 @@
       transform: translateY(-2000px);
     }
   }
+
+  /* A shooting star is only on screen for the first ~7% of its cycle and
+     invisible for the rest, so a long duration is what makes it occasional.
+     Each instance overrides duration and delay inline. Travel is along the
+     local +X axis, so the parent's rotation sets the direction and the trail
+     stays aligned with it. */
+  --animate-shoot: shoot 24s linear infinite;
+
+  @keyframes shoot {
+    0% {
+      transform: translate3d(0, 0, 0);
+      opacity: 0;
+    }
+    0.5% {
+      opacity: 1;
+    }
+    5% {
+      opacity: 1;
+    }
+    7% {
+      transform: translate3d(140vmax, 0, 0);
+      opacity: 0;
+    }
+    100% {
+      transform: translate3d(140vmax, 0, 0);
+      opacity: 0;
+    }
+  }
 }
 
 /* The original set these on <html> to kill the scrollbar behind a fixed

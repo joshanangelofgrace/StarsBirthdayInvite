@@ -6,6 +6,7 @@
     <StarField layer="near" :count="700" :size="1" :seed="1" />
     <StarField layer="mid" :count="200" :size="2" :seed="2" />
     <StarField layer="far" :count="100" :size="3" :seed="3" />
+    <ShootingStars />
 
     <div
       class="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center"
@@ -35,8 +36,9 @@
       </p>
     </div>
 
-    <button class="text-center px-5 py-3 border bg-transparent border-white">RSVP</button>
-
+    <div class="absolute inset-x-0 bottom-[20%] z-10 w-full flex">
+      <button class="leading-relaxed font-medium text-balance text-center mx-auto text-xl px-8 py-3 border bg-transparent border-white text-white cursor-pointer hover:text-night-700 hover:bg-white/90">RSVP</button>
+  </div>
     <p
       class="absolute inset-x-0 bottom-[12%] z-10 px-6 text-center text-sm font-light tracking-[0.15em] text-[gold] sm:text-base"
     >
