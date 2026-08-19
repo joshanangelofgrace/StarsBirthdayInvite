@@ -1,0 +1,13 @@
+.nuxt
+.output
+.data
+.nitro
+.cache
+dist
+node_modules
+public
+
+# Verbatim SVG extracted from the original site — leave its formatting alone.
+app/components/TornPaperShape.vue
+
+package-lock.json

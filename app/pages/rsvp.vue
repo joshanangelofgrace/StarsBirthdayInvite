@@ -24,7 +24,7 @@
            separately. Every control carries a `name`, so whichever route it
            takes (native POST, FormData, or refs added later) the field names
            are already in place. -->
-      <form class="mt-12 space-y-8" >
+      <form class="mt-12 space-y-8" @submit.prevent="submit" netlify>
         <div>
           <label
             for="name"
@@ -40,6 +40,7 @@
             autocomplete="name"
             class="mt-3 w-full border border-white/30 bg-white/5 px-4 py-3 font-light text-white placeholder:text-white/30 focus:border-white focus:bg-white/10 focus:outline-none"
             placeholder="Your name"
+            v-model="name"
           />
         </div>
 
@@ -58,39 +59,9 @@
             autocomplete="email"
             class="mt-3 w-full border border-white/30 bg-white/5 px-4 py-3 font-light text-white placeholder:text-white/30 focus:border-white focus:bg-white/10 focus:outline-none"
             placeholder="you@example.com"
+            v-model="email"
           />
         </div>
-
-        <fieldset>
-          <legend class="text-xs font-light tracking-[0.2em] text-white/70">
-            WILL YOU JOIN US?
-          </legend>
-          <div class="mt-4 space-y-3">
-            <label
-              class="flex cursor-pointer items-center gap-3 font-light text-white"
-            >
-              <input
-                name="attending"
-                type="radio"
-                value="yes"
-                required
-                class="size-4 shrink-0 accent-[gold]"
-              />
-              <span>Yes, I'll be there</span>
-            </label>
-            <label
-              class="flex cursor-pointer items-center gap-3 font-light text-white"
-            >
-              <input
-                name="attending"
-                type="radio"
-                value="no"
-                class="size-4 shrink-0 accent-[gold]"
-              />
-              <span>Sorry, I can't make it</span>
-            </label>
-          </div>
-        </fieldset>
 
         <div>
           <label
@@ -105,13 +76,13 @@
             rows="4"
             class="mt-3 w-full resize-y border border-white/30 bg-white/5 px-4 py-3 font-light text-white placeholder:text-white/30 focus:border-white focus:bg-white/10 focus:outline-none"
             placeholder="Optional"
+            v-model="message"
           />
         </div>
 
         <button
           type="submit"
           class="w-full cursor-pointer border border-white bg-transparent px-8 py-3 text-center text-xl leading-relaxed font-medium text-white hover:bg-white/90 hover:text-night-700"
-          @click="submit"
         >
           Send RSVP
         </button>
@@ -128,12 +99,69 @@
 </template>
 <script setup lang="ts">
 import confetti from 'canvas-confetti'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-const submit = () => {
-    confetti({
-  particleCount: 300,
-  spread: 70,
-  origin: { y: 0.6 }
-});
+const count = 200;
+const defaults = {
+  origin: { y: 0.7 }
+};
+
+const name = ref<string>()
+const email = ref<string>()
+const message = ref<string>()
+
+const submit = async () => {
+  const response = await fetch("https://formbold.com/s/3jYWb", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      email: email.value,
+      name: name.value,
+      message: message.value,
+    }),
+  });
+
+  const result = await response.json();
+  if (response.ok) {
+    fire(0.25, {
+      spread: 26,
+      startVelocity: 55,
+    });
+    fire(0.2, {
+      spread: 60,
+    });
+    fire(0.35, {
+      spread: 100,
+      decay: 0.91,
+      scalar: 0.8
+    });
+    fire(0.1, {
+      spread: 120,
+      startVelocity: 25,
+      decay: 0.92,
+      scalar: 1.2
+    });
+    fire(0.1, {
+      spread: 120,
+      startVelocity: 45,
+    });
+
+    const router = useRouter()
+    router.push({ path: '/thank-you' })
+  } else {
+    
+  }
+}
+
+const fire = (particleRatio: number, opts: any) => {
+  confetti({
+    ...defaults,
+    ...opts,
+    particleCount: Math.floor(count * particleRatio)
+  });
 }
 </script>

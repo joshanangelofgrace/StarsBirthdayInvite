@@ -5,6 +5,11 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-08-17',
   devtools: { enabled: true },
 
+  modules: [
+    '@nuxt/eslint',
+    'motion-v/nuxt'
+  ],
+
   css: ['~/assets/css/main.css'],
 
   // The invite has no server-side work, so build straight to static files.
@@ -28,6 +33,13 @@ export default defineNuxtConfig({
   // values live in app/assets/css/main.css under @theme.
   vite: {
     plugins: [tailwindcss()],
+  },
+
+  eslint: {
+    config: {
+      // Formatting is Prettier's job; ESLint only reports code issues.
+      stylistic: false,
+    },
   },
 
   app: {
