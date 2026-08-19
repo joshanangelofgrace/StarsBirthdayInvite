@@ -19,11 +19,6 @@
       >
         18TH OCTOBER 2026
       </p>
-
-      <!-- Markup only — no v-model or submit handler, the backend is wired up
-           separately. Every control carries a `name`, so whichever route it
-           takes (native POST, FormData, or refs added later) the field names
-           are already in place. -->
       <form class="mt-12 space-y-8" @submit.prevent="submit" netlify>
         <div>
           <label
@@ -38,8 +33,11 @@
             type="text"
             required
             autocomplete="name"
-            class="mt-3 w-full border border-white/30 bg-white/5 px-4 py-3 font-light text-white placeholder:text-white/30 focus:border-white focus:bg-white/10 focus:outline-none"
+            class="mt-3 w-full border border-white/30 bg-white/5 px-4 py-3 font-light text-white 
+                 placeholder:text-white/30 focus:border-white focus:bg-white/10 focus:outline-none
+                   disabled:text-white/50"
             placeholder="Your name"
+            :disabled="submitting"
             v-model="name"
           />
         </div>
@@ -57,8 +55,11 @@
             type="email"
             required
             autocomplete="email"
-            class="mt-3 w-full border border-white/30 bg-white/5 px-4 py-3 font-light text-white placeholder:text-white/30 focus:border-white focus:bg-white/10 focus:outline-none"
+            class="mt-3 w-full border border-white/30 bg-white/5 px-4 py-3 font-light text-white 
+                placeholder:text-white/30 focus:border-white focus:bg-white/10 
+                  focus:outline-none disabled:text-white/50"
             placeholder="you@example.com"
+            :disabled="submitting"
             v-model="email"
           />
         </div>
@@ -74,17 +75,25 @@
             id="message"
             name="message"
             rows="4"
-            class="mt-3 w-full resize-y border border-white/30 bg-white/5 px-4 py-3 font-light text-white placeholder:text-white/30 focus:border-white focus:bg-white/10 focus:outline-none"
+            class="mt-3 w-full resize-y border border-white/30 bg-white/5 px-4 py-3 font-light 
+                text-white placeholder:text-white/30 focus:border-white focus:bg-white/10 
+                  focus:outline-none disabled:text-white/50"
             placeholder="Optional"
+            :disabled="submitting"
             v-model="message"
           />
         </div>
 
         <button
           type="submit"
-          class="w-full cursor-pointer border border-white bg-transparent px-8 py-3 text-center text-xl leading-relaxed font-medium text-white hover:bg-white/90 hover:text-night-700"
+          :disabled="submitting"
+          class="w-full flex cursor-pointer border border-white bg-transparent px-8 py-3 text-center text-xl leading-relaxed font-medium text-white hover:bg-white/90 hover:text-night-700"
         >
-          Send RSVP
+        <!-- A spinning loading icon -->
+          <div class="text-center flex m-auto gap-4">
+            <div v-if="submitting" class="animate-spin h-8 w-8 border-4 border-white/80 border-solid rounded-full border-t-transparent"></div>
+            <div>Send RSVP</div>
+          </div>
         </button>
       </form>
 
@@ -107,11 +116,15 @@ const defaults = {
   origin: { y: 0.7 }
 };
 
+const router = useRouter()
+
 const name = ref<string>()
 const email = ref<string>()
 const message = ref<string>()
+const submitting = ref<boolean>(false)
 
 const submit = async () => {
+  submitting.value = true
   const response = await fetch("https://formbold.com/s/3jYWb", {
     method: "POST",
     headers: {
@@ -125,7 +138,7 @@ const submit = async () => {
     }),
   });
 
-  const result = await response.json();
+  const result = await response.json()
   if (response.ok) {
     fire(0.25, {
       spread: 26,
@@ -150,11 +163,16 @@ const submit = async () => {
       startVelocity: 45,
     });
 
-    const router = useRouter()
     router.push({ path: '/thank-you' })
   } else {
-    
+    const toast = useToast()
+    toast.add({
+      title: 'Unable to send RSVP',
+      description: 'There was an error submitting the RSVP',
+      color: 'error'
+    })
   }
+  submitting.value = false
 }
 
 const fire = (particleRatio: number, opts: any) => {

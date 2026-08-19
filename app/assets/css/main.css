@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@nuxt/ui";
 
 /* Tailwind v4 keeps design tokens in CSS. Everything below becomes a utility:
    --color-night-900 -> bg-night-900 / to-night-900, --animate-drift-far ->
