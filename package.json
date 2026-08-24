@@ -7,7 +7,8 @@
     "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "og": "node scripts/generate-og.mjs"
   },
   "dependencies": {
     "@nuxt/ui": "^4.10.0",

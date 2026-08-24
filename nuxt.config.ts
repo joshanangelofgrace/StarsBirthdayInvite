@@ -1,5 +1,22 @@
 import tailwindcss from '@tailwindcss/vite'
 
+// Link previews need an *absolute* og:image — a relative path is ignored by
+// several scrapers, and pasting the link into WhatsApp or iMessage then shows
+// no image at all. Netlify exports the deploy's own address at build time
+// (DEPLOY_PRIME_URL covers branch/preview deploys, URL is the production
+// domain), so nothing has to be hardcoded. NUXT_PUBLIC_SITE_URL is the manual
+// override, and is also what makes `npm run build` locally produce real URLs.
+const siteUrl = (
+  process.env.NUXT_PUBLIC_SITE_URL ||
+  process.env.DEPLOY_PRIME_URL ||
+  process.env.URL ||
+  ''
+).replace(/\/$/, '')
+
+const title = 'You are invited to a party under the stars'
+const description = 'A shared birthday celebration of Lieke & Joshua — 18th October 2026.'
+const ogImage = `${siteUrl}/og-image.png`
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-08-17',
@@ -46,15 +63,37 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      title: 'You are invited to a party under the stars',
+      title,
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        {
-          name: 'description',
-          content: 'A shared birthday celebration of Lieke & Joshua — 18th October 2026.',
-        },
+        { name: 'description', content: description },
         { name: 'theme-color', content: '#090a0f' },
+
+        // Open Graph — Facebook, WhatsApp, iMessage, LinkedIn, Slack, Discord.
+        // `property` rather than `name` is what these scrapers look for.
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: 'Lieke & Joshua' },
+        { property: 'og:title', content: title },
+        { property: 'og:description', content: description },
+        { property: 'og:url', content: siteUrl || '/' },
+        { property: 'og:image', content: ogImage },
+        // Declaring the dimensions lets a scraper reserve the 1.91:1 slot on
+        // first pass, instead of rendering a text-only card until it has
+        // downloaded and measured the file.
+        { property: 'og:image:width', content: '1200' },
+        { property: 'og:image:height', content: '630' },
+        { property: 'og:image:type', content: 'image/png' },
+        {
+          property: 'og:image:alt',
+          content:
+            'You are invited to a party under the stars — a shared birthday celebration of Lieke & Joshua, 18th October 2026.',
+        },
+
+        // X/Twitter reads og:* for everything except the card size, which has
+        // to be opted into or the image renders as a small square thumbnail.
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image', content: ogImage },
       ],
       link: [
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },

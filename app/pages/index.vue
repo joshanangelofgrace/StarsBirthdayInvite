@@ -6,7 +6,7 @@
            gradient fill runs top-to-bottom per line, so a wrapped line would
            land on the dark end and stop being readable. -->
       <h1
-        class="text-sm leading-relaxed font-light tracking-[0.2em] text-balance text-white sm:text-2xl sm:tracking-[0.35em] md:text-3xl"
+        class="text-xl leading-relaxed font-light tracking-[0.2em] text-balance text-white sm:text-2xl sm:tracking-[0.35em] md:text-3xl"
       >
         <span
           class="block bg-linear-to-b from-white from-25% to-night-700 bg-clip-text text-transparent"
