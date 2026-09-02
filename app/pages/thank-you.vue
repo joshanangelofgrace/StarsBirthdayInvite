@@ -12,16 +12,16 @@
           WOOHOO
         </span>
         <span
-          class="block bg-linear-to-b from-white from-25% to-night-700 bg-clip-text text-transparent"
+          class="block"
         >
-          🎉🎉 BE READY TO PARTY 🎉🎉
+          🎉🎉 <span class="bg-clip-text text-transparent bg-linear-to-b from-white from-25% to-night-700">BE READY TO PARTY</span> 🎉🎉
         </span>
       </h1>
 
       <p
         class="mt-10 max-w-xl text-xs leading-loose font-light tracking-[0.25em] text-white/80 sm:text-sm"
       >
-        THEME: <span class="tracking-widest font-medium text-white">THE SPARKLE OF STARS AND GOLD</span>
+        THEME: <span class="tracking-widest font-medium text-white">UNDER THE STARS</span>
       </p>
 
       <p
@@ -33,7 +33,7 @@
       <p
         class="mt-4 max-w-xl text-xs leading-loose font-light tracking-[0.25em] text-white/80 sm:text-sm"
       >
-        DATE & TIME: <span class="tracking-widest font-medium text-white">18TH OCT FROM 14:00</span>
+        DATE & TIME: <span class="tracking-widest font-medium text-white">18TH OCT FROM 15:30 UNTIL 19:00</span>
       </p>
 
       <p

@@ -11,24 +11,24 @@
     "og": "node scripts/generate-og.mjs"
   },
   "dependencies": {
-    "@nuxt/ui": "^4.10.0",
+    "@nuxt/ui": "^4.11.0",
     "canvas-confetti": "^1.9.4",
     "motion-v": "^2.4.0",
     "nuxt": "^4.5.2",
-    "vue": "^3.5.41",
-    "vue-router": "^5.2.0"
+    "vue": "^3.5.42",
+    "vue-router": "^5.3.0"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.17.0",
     "@tailwindcss/vite": "^4.3.3",
     "@types/canvas-confetti": "^1.9.0",
-    "eslint": "^10.8.1",
+    "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
-    "nuxtseo-layer-devtools": "^5.3.12",
+    "nuxtseo-layer-devtools": "^5.3.14",
     "prettier": "^3.9.6",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
-    "vue-tsc": "^3.3.10"
+    "vue-tsc": "^3.3.11"
   }
 }
