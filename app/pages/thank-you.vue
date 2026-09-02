@@ -46,7 +46,7 @@
      <p
       class="absolute inset-x-0 bottom-[12%] z-10 px-6 text-center text-sm font-light tracking-[0.15em] text-[gold] sm:text-base"
     >
-      WE LOOK FORWARD TO SEEING YOU THERE
+      WE LOOK FORWARD TO SEEING YOU
     </p>
   </div>
 </template>
