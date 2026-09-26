@@ -123,23 +123,50 @@ const email = ref<string>()
 const message = ref<string>()
 const submitting = ref<boolean>(false)
 
-const submit = async () => {
-  submitting.value = true
-  const response = await fetch("https://formbold.com/s/9mBOj", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify({
-      email: email.value,
-      name: name.value,
-      message: message.value,
-    }),
-  });
+const toast = useToast()
 
-  const result = await response.json()
-  if (response.ok) {
+const submit = async () => {
+  if (submitting.value) return
+  submitting.value = true
+
+  try {
+    const response = await fetch("https://formbold.com/s/9mBOj", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        email: email.value,
+        name: name.value,
+        message: message.value,
+      }),
+    });
+
+    // FormBold answers a rejected submission (velocity heuristics, automatic
+    // reCAPTCHA) with an HTML page rather than JSON, so read the body as text
+    // and only then try to parse it. Calling response.json() up front throws
+    // before the ok-check, so the toast never fires.
+    const body = await response.text()
+    let payload: { message?: string } | null = null
+    try {
+      payload = JSON.parse(body)
+    } catch {
+      payload = null
+    }
+
+    if (!response.ok) {
+      console.error('RSVP submission failed', response.status, payload ?? body)
+      toast.add({
+        title: 'Unable to send RSVP',
+        description:
+          payload?.message ??
+          `The RSVP service rejected the submission (${response.status}).`,
+        color: 'error'
+      })
+      return
+    }
+
     fire(0.25, {
       spread: 26,
       startVelocity: 55,
@@ -164,15 +191,18 @@ const submit = async () => {
     });
 
     router.push({ path: '/thank-you' })
-  } else {
-    const toast = useToast()
+  } catch (error) {
+    // Network failure, CORS rejection, DNS. Without this the throw escapes and
+    // submitting stays true, locking the form until the guest reloads.
+    console.error('RSVP submission failed', error)
     toast.add({
       title: 'Unable to send RSVP',
-      description: 'There was an error submitting the RSVP',
+      description: 'There was an error submitting the RSVP. Please try again.',
       color: 'error'
     })
+  } finally {
+    submitting.value = false
   }
-  submitting.value = false
 }
 
 const fire = (particleRatio: number, opts: any) => {
