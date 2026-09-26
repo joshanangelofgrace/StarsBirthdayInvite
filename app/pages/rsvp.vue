@@ -125,7 +125,7 @@ const submitting = ref<boolean>(false)
 
 const submit = async () => {
   submitting.value = true
-  const response = await fetch("https://formbold.com/s/3jYWb", {
+  const response = await fetch("https://formbold.com/s/9mBOj", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
