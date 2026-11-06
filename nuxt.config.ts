@@ -25,8 +25,22 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui',
+    '@nuxt/image',
     'motion-v/nuxt'
   ],
+
+  // Gallery photos are resized and converted to WebP at build time (see
+  // modules/gallery.ts, which also lists them for the prerenderer).
+  image: {
+    // Pinned so a Netlify build doesn't auto-switch to Netlify Image CDN —
+    // local and deployed builds then produce the same static files.
+    provider: 'ipx',
+    ipx: {
+      // Phone photos are often stored sideways with an EXIF "rotate" tag,
+      // which is stripped from the output, so bake the rotation in.
+      sharpOptions: { autoOrient: true },
+    },
+  },
 
   css: ['~/assets/css/main.css'],
 
@@ -43,7 +57,7 @@ export default defineNuxtConfig({
     preset: 'static',
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/rsvp'],
+      routes: ['/', '/rsvp', '/gallery'],
     },
   },
 
