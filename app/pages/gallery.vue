@@ -2,8 +2,14 @@
 // Every image dropped into public/gallery/ shows up here, in filename order —
 // add or remove files and rebuild. modules/gallery.ts builds the list.
 import { photos as gallery } from '#gallery'
+import confetti from 'canvas-confetti'
 
 const photos = gallery.map((p) => ({ ...p, alt: 'Photo from the party under the stars' }))
+
+const count = 200;
+const defaults = {
+  origin: { y: 0.7 }
+};
 
 // The gallery is password protected by a Netlify Edge Function
 // (netlify/edge-functions/gallery-auth.ts), which only sees real page loads.
@@ -18,6 +24,41 @@ definePageMeta({
 })
 
 useSeoMeta({ robots: 'noindex, nofollow' })
+
+onMounted(() => {
+  setTimeout(() => {
+    fire(0.25, {
+      spread: 26,
+      startVelocity: 55,
+    });
+    fire(0.2, {
+      spread: 60,
+    });
+    fire(0.35, {
+      spread: 100,
+      decay: 0.91,
+      scalar: 0.8
+    });
+     fire(0.1, {
+      spread: 120,
+      startVelocity: 25,
+      decay: 0.92,
+      scalar: 1.2
+    });
+    fire(0.1, {
+      spread: 120,
+      startVelocity: 45,
+    });
+  }, 500);
+})
+
+const fire = (particleRatio: number, opts: any) => {
+  confetti({
+    ...defaults,
+    ...opts,
+    particleCount: Math.floor(count * particleRatio)
+  });
+}
 </script>
 
 <template>
