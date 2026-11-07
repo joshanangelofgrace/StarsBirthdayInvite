@@ -11,3 +11,32 @@
 
 [build.environment]
   NITRO_PRESET = "static"
+
+# The party is over: send every page visit to the gallery. `force` is needed
+# because these pages still exist as prerendered files, and Netlify otherwise
+# serves a real file ahead of a redirect. 302 (not 301) so browsers don't cache
+# it forever — delete these rules to bring the invite pages back. Assets
+# (/_nuxt, /_ipx, /gallery/*, images) are untouched.
+[[redirects]]
+  from = "/"
+  to = "/gallery"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/index.html"
+  to = "/gallery"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/rsvp"
+  to = "/gallery"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/thank-you"
+  to = "/gallery"
+  status = 302
+  force = true
